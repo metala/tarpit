@@ -9,16 +9,14 @@ import (
 	"time"
 )
 
-type empty struct{}
-
-func sshHandler(conn net.Conn) {
+func sshHandler(conn net.Conn, delay time.Duration) {
 	eof := make(chan empty)
 	go func() {
 		io.Copy(ioutil.Discard, conn)
 		eof <- empty{}
 	}()
 
-	tick := time.Tick(10 * time.Second)
+	tick := time.Tick(delay)
 	for {
 		select {
 		case <-eof:

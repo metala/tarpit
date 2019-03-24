@@ -6,7 +6,8 @@ import (
 	"time"
 )
 
-type protoHandler func(net.Conn)
+type empty struct{}
+type protoHandler func(net.Conn, time.Duration)
 
 func protocolHandler(proto string) (protoHandler, error) {
 	switch proto {
@@ -22,10 +23,10 @@ func logConn(conn net.Conn, msg string) {
 	fmt.Printf("%s, %s, %s\n", now.String(), conn.RemoteAddr().String(), msg)
 }
 
-func connHandler(handler protoHandler, conn net.Conn) {
+func connHandler(handler protoHandler, conn net.Conn, delay time.Duration) {
 	defer conn.Close()
 
 	logConn(conn, "handling")
-	handler(conn)
+	handler(conn, delay)
 	logConn(conn, "closing")
 }
