@@ -9,12 +9,14 @@ import (
 type empty struct{}
 type protoHandler func(net.Conn, time.Duration)
 
-func protocolHandler(proto string) (protoHandler, error) {
+func protocolHandler(proto string) (protoHandler, uint16, error) {
 	switch proto {
 	case "ssh":
-		return sshHandler, nil
+		return sshHandler, 22, nil
+	case "http":
+		return httpHandler, 80, nil
 	default:
-		return nil, fmt.Errorf("unknown protocol '%s'", proto)
+		return nil, 0, fmt.Errorf("unknown protocol '%s'", proto)
 	}
 }
 

@@ -29,7 +29,7 @@ func main() {
 	flag.StringVarP(&protocol, "proto", "P", "ssh", "protocol to tarpit")
 	flag.StringVarP(&delayParam, "delay", "d", "10s", "delay between the tarpit keep-alive data packets")
 	flag.StringVarP(&bindAddr, "bind-address", "b", "", "address to bind the socket to")
-	flag.Uint16VarP(&port, "port", "p", 22, "TCP port")
+	flag.Uint16VarP(&port, "port", "p", 0, "TCP port, leave it 0 for service default")
 	flag.Uint16VarP(&uid, "uid", "u", 0, "setuid, after creating a listening socket")
 	flag.Uint16VarP(&gid, "gid", "g", 0, "setgid, after creating a listening socket")
 	flag.BoolVarP(&versionFlag, "version", "v", false, "show current version")
@@ -40,8 +40,11 @@ func main() {
 		return
 	}
 
-	handler, err := protocolHandler(protocol)
+	handler, defaultPort, err := protocolHandler(protocol)
 	assert(err, "protocol handler", configErrorCode)
+	if port == 0 {
+		port = defaultPort
+	}
 
 	delay, err := time.ParseDuration(delayParam)
 	assert(err, "parse delay", configErrorCode)
@@ -69,8 +72,9 @@ func main() {
 }
 
 func assert(err error, msg string, code int) {
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "ERR: %s; %s \n", msg, err.Error())
-		os.Exit(code)
+	if err == nil {
+		return
 	}
+	fmt.Fprintf(os.Stderr, "ERR: %s; %s \n", msg, err.Error())
+	os.Exit(code)
 }
