@@ -1,4 +1,4 @@
-module metala.org/pkg/tarpit
+module go.metala.org/tarpit
 
 go 1.12
 
