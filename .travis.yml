@@ -1,0 +1,21 @@
+language: go
+sudo: false
+matrix:
+  include:
+  - go: 1.x
+before_install: 
+install: 
+script:
+- make all
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: RKSp/WPyBtognl1Gwjlc2zpmIVHzbAsfdxuHEpHyahwPwsoMSmKRRn/d5X6rkc+3t4HCE2/Kkv3pn/ivhdoaVdc+7gnbH4pZvQ5pzNrOyNk9ckoYcli3LwYtXThEAeQk9lHg7oy5RpJHguZdYjfNKAudoYsLMahXDhLn3jEZDddaNG5YrV72LTDrBzlTzkpSlDA4zliOmwhHCk4ltlXBAvNiZkiq2CsjNUcfZqrEAvvT4QBrwmJaf/hrNt15lsQKzHqOYoZWCJ6rxiJ+30xa4q04gYbpMoJLfbkU7WdlxBq0uCEViIgcGin3kyvjYl3dW59EQ9z5+1pAX+lFqiW76h9NLhfFqOCD2N3zgDWLnM8RC2kd/qvatljoY5n8/e2pwH6p9bSPfTCmPbfY1esHY5uETyQV7/8IPf5XRbaPi5ul5lp+yhLIV3RCI5+HX01bxpBTyY0p6E0Bil9MEzWuiVIuvmU0oAG5uQ2pw2PAHm2ktUPjRAKkQjEpeT1HnfENXpSsCA8E70q/2F1YHHMlj9KYXTyGeMMYZmh0TUFdyciCkqt4o8vZyqSR1UObPUAopoRmn7QJh/p7roVi37mBvtz7OdVZnmCw2Jb+7ROXLPaTGjE4vUQrUOIPoDU5DE6nffnI7oI10q0PZdh9R/pub2MtKMdtrC3V7RZuiuCstLY=
+  file:
+  - build/tarpit-linux-amd64
+  - build/tarpit-darwin-amd64
+  - build/tarpit-windows-amd64.exe
+  on:
+    repo: metala/tarpit
+    tags: true
