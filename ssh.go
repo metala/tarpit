@@ -12,8 +12,8 @@ import (
 func sshHandler(conn net.Conn, delay time.Duration) {
 	eof := make(chan empty)
 	go func() {
+		defer close(eof)
 		io.Copy(ioutil.Discard, conn)
-		eof <- empty{}
 	}()
 
 	tick := time.Tick(delay)
