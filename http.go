@@ -37,12 +37,13 @@ func httpHandler(conn net.Conn, delay time.Duration) {
 		io.Copy(ioutil.Discard, conn)
 	}()
 
-	tick := time.Tick(delay)
+	ticker := time.NewTicker(delay)
+	defer ticker.Stop()
 	for {
 		select {
 		case <-eof:
 			return
-		case <-tick:
+		case <-ticker.C:
 			_, err := fmt.Fprintf(conn, "X-%0x: %0x\r\n", rand.Uint32(), rand.Uint32())
 			if err != nil {
 				return
