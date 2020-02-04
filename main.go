@@ -10,7 +10,7 @@ import (
 	flag "github.com/spf13/pflag"
 )
 
-var version = "0.1.0"
+var version string
 
 const (
 	configErrorCode = 1
@@ -36,7 +36,7 @@ func main() {
 	flag.Parse()
 
 	if versionFlag {
-		fmt.Println("Tarpit version", version)
+		fmt.Println("tarpit version", version)
 		return
 	}
 
