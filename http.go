@@ -33,7 +33,7 @@ func httpHandler(conn net.Conn, delay time.Duration) {
 
 	eof := make(chan empty)
 	go func() {
-		close(eof)
+		defer close(eof)
 		io.Copy(ioutil.Discard, conn)
 	}()
 
